@@ -1,0 +1,104 @@
+-------------------------------------------------------------------
+1- sudo useradd tarek      add accounts for the users 
+   passwd 
+  - sudo useradd tarek 
+    passwd
+-------------------------------------------------------------------
+2- sudo groupadd -g 10000 sales     to add the groups 
+   sudo groupadd -g 10001 hr
+   sudo groupadd -g 10002 web
+-------------------------------------------------------------------
+3- sudo usermod -aG sales user1     add user1 and user2 to the sales
+                                    secondary group, user3 and user4 to the hr secondary group
+                                    User5 and user6 to web secondary group. And add user7 to all secondary groups  
+   sudo usermod -aG sales user2
+
+   sudo usermod -aG hr user3
+   sudo usermod -aG hr user4
+
+   sudo usermod -aG web user5
+   sudo usermod -aG web user6
+-------------------------------------------------------------------
+4- su - user1       to Login as each user and use id command to verify that they are in the appropriate groups. 
+   su - user2
+   su - user3
+   su - user4
+   su - user5
+   su - user6
+   su - user7
+
+  id
+  grep 'sales' /etc/group
+  grep 'hr' /etc/group
+  grep 'web' /etc/group
+-----------------------------------------------------------------------
+5-  mkdir /depts
+    mkdir /depts/sales
+    mkdir /depts/hr
+    mkdir /depts/web
+------------------------------------------------------------------------
+6- sudo chgrp sales /depts/sales       chgrp command, set the group ownership of each directory to the group with the matching name
+   sudo chgrp hr /depts/hr
+   sudo chgrp web /depts/web
+-----------------------------------------------------------------------
+7-  chmod 755 /depts                      owner group other 
+    chmod 770 /depts/sales
+    chmod 770 /depts/hr
+    chmod 770 /depts/web
+-----------------------------------------------------------------------
+8- sudo chmod g+s /depts/sales           to Set the set-gid bit on each departmental directory
+   sudo chmod g+s /depts/hr
+   sudo chmod g+s /depts/web
+-----------------------------------------------------------------------
+10- sudo visudo 
+    user3 ALL=(ALL:ALL) /bin/mount, /bin/umount
+    user4 ALL=(ALL:ALL) /bin/mount, /bin/umount
+    user5 ALL=(ALL:ALL) /sbin/fdisk 
+                                               to allow user3 and user4 to use /bin/mount and /bin/umount commands
+--------------------------------------------------------------------------
+11- sudo umount /boot
+-------------------------------------------------------------------------
+12- sudo mount /boot
+    sudo fdisk -l                              to login by user4 and remount /boot 
+--------------------------------------------------------------------------
+13-mkdir mydirectory
+   chmod 770 mydirectory
+   chgrp sales mydirectory                     to create a directory with permissions rwxrwx---, grant a second group (sales) r-x permissions
+   chmod g=rx mydirectory
+---------------------------------------------------------------------------
+14- touch dir1/file1
+    chmod g+rw dir1/file1                      to create a file on that directory and grant read and write to a second group 
+
+--------------------------------------------------------------------------
+15-chmod g+s dir1
+--------------------------------------------------------------------------
+16 -sudo mkdir -p /opt/research
+    sudo chown root:grads /opt/research
+    sudo chmod 770 /opt/research
+    sudo chmod g+s /opt/research
+    sudo setfacl -m g:profs:rw /opt/research
+    sudo setfacl -m g:interns:r /opt/research
+-----------------------------------------------------------------------------
+17-sudo nano /etc/selinux/config
+   sudo reboot
+   sestatus
+   sudo nano /etc/selinux/config
+   sudo setenforce 1
+------------------------------------------------------------------------------
+21-26
+   sudo cp /etc/resolv.conf ~
+   ls -lZ /etc/resolv.conf
+   sudo mv ~/resolv.conf /etc/resolv.conf
+   ls -lZ /etc/resolv.conf
+   sudo restorecon /etc/resolv.conf
+   ls -lZ /etc/resolv.conf
+-----------------------------------------------------------------------------
+27-30
+  sudo nano /etc/ssh/sshd_config
+  sudo systemctl restart sshd
+  ssh-keygen -t rsa
+  ssh-copy-id user@your_server_ip
+  ssh user@your_server_ip
+  sudo nano /etc/ssh/sshd_config"
+  sudo systemctl restart sshd
+-----------------------------------------------------------------------------------
