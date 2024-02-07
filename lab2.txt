@@ -1,0 +1,29 @@
+1- sudo nano /etc/httpd/conf.modules.d/00-mpm.conf
+#LoadModule mpm_worker_module modules/mod_mpm_worker.so
+LoadModule mpm_worker_module modules/mod_mpm_worker.so
+sudo systemctl restart httpd
+----------------------------------------------------
+2- sudo httpd -M | grep rewrite
+----------------------------------------------------
+3-a sudo nano /etc/httpd/conf/httpd.conf
+RewriteEngine on
+RewriteCond %{QUERY_STRING} forbidden
+RewriteRule "^/page(.*)$"  - [F]
+sudo systemctl restart httpd
+----------------------------------------------------
+3-b-RewriteEngine On
+RewriteCond %{QUERY_STRING} .
+RewriteRule "^/page(.*)$"  "page?" [R]
+sudo systemctl restart httpd 
+----------------------------------------------------
+3-c- RewriteEngine On
+ RewriteCond %{QUERY_STRING} ^var=val$
+RewriteRule ^page1$ /page2 [R=301,L]
+sudo systemctl restart httpd
+----------------------------------------------------
+3-d- RewriteEngine On
+RewriteCond %{QUERY_STRING} ^var=([^&]+)
+RewriteRule ^([^/]+)$ /$1/%1? [R]
+for each one
+sudo systemctl restart httpd
+----------------------------------------------------
